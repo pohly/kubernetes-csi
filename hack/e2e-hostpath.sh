@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## This file is for app/hostpathplugin
+## This file is for cmd/hostpath
 ## It could be used for other apps in this repo, but
 ## those applications may or may not take the same
 ## arguments
@@ -10,7 +10,7 @@
 UDS="/tmp/e2e-csi-sanity.sock"
 CSI_ENDPOINT="unix://${UDS}"
 CSI_MOUNTPOINT="/mnt"
-APP=hostpathplugin
+APP=hostpath
 
 SKIP="WithCapacity"
 if [ x${TRAVIS} = x"true" ] ; then

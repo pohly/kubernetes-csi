@@ -27,7 +27,7 @@ import (
 	"google.golang.org/grpc/status"
 	"k8s.io/kubernetes/pkg/util/mount"
 
-	"github.com/kubernetes-csi/drivers/pkg/csi-common"
+	"github.com/kubernetes-csi/kubernetes-csi/pkg/csi-common"
 )
 
 type nodeServer struct {

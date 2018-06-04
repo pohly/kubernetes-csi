@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kubernetes-csi/drivers/pkg/cinder"
+	"github.com/kubernetes-csi/kubernetes-csi/pkg/cinder"
 	"github.com/spf13/cobra"
 )
 

@@ -23,7 +23,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/kubernetes-csi/drivers/pkg/nfs"
+	"github.com/kubernetes-csi/kubernetes-csi/pkg/nfs"
 )
 
 var (

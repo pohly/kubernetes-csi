@@ -26,7 +26,7 @@ import (
 	"k8s.io/kubernetes/pkg/util/mount"
 	"k8s.io/kubernetes/pkg/volume/util"
 
-	"github.com/kubernetes-csi/drivers/pkg/csi-common"
+	"github.com/kubernetes-csi/kubernetes-csi/pkg/csi-common"
 )
 
 type nodeServer struct {

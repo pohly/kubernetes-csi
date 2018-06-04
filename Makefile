@@ -15,34 +15,47 @@
 REGISTRY_NAME=quay.io/k8scsi
 IMAGE_NAME=hostpathplugin
 IMAGE_VERSION=canary
-IMAGE_TAG=$(REGISTRY_NAME)/$(IMAGE_NAME):$(IMAGE_VERSION)
+IMAGE_TAG=$(REGISTRY_NAME)/$*:$(IMAGE_VERSION)
 
-.PHONY: all flexadapter nfs hostpath iscsi cinder clean hostpath-container
+REV=$(shell git describe --long --match='v*' --dirty)
 
-all: flexadapter nfs hostpath iscsi cinder
+ifdef V
+TESTARGS = -v -args -alsologtostderr -v 5
+else
+TESTARGS =
+endif
 
-test:
-	go test github.com/kubernetes-csi/drivers/pkg/... -cover
-	go vet github.com/kubernetes-csi/drivers/pkg/...
+.PHONY: all flexadapter nfs hostpath driver-registrar csi-attacher iscsi cinder clean
+
+all: flexadapter nfs hostpath iscsi cinder driver-registrar csi-attacher csi-provisioner
+
 flexadapter:
-	if [ ! -d ./vendor ]; then dep ensure -vendor-only; fi
 	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o _output/flexadapter ./app/flexadapter
 nfs:
-	if [ ! -d ./vendor ]; then dep ensure -vendor-only; fi
 	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o _output/nfsplugin ./app/nfsplugin
-hostpath:
-	if [ ! -d ./vendor ]; then dep ensure -vendor-only; fi
-	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o _output/hostpathplugin ./app/hostpathplugin
-hostpath-container: hostpath
-	docker build -t $(IMAGE_TAG) -f ./app/hostpathplugin/Dockerfile .
-push: hostpath-container
-	docker push $(IMAGE_TAG)
 iscsi:
-	if [ ! -d ./vendor ]; then dep ensure -vendor-only; fi
 	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o _output/iscsiplugin ./app/iscsiplugin
 cinder:
-	if [ ! -d ./vendor ]; then dep ensure -vendor-only; fi
 	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o _output/cinderplugin ./app/cinderplugin
+
+hostpath driver-registrar csi-attacher csi-provisioner:
+	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-X main.version=$(REV) -extldflags "-static"' -o _output/$@ ./cmd/$@
+
 clean:
 	go clean -r -x
 	-rm -rf _output
+
+%-container: %
+	docker build -t $(IMAGE_TAG) -f ./cmd/$*/Dockerfile .
+
+push-%: %-container
+	docker push $(IMAGE_TAG)
+
+push: push-hostpath push-driver-registrar push-csi-attacher push-csi-provisioner
+
+# Must pass both locally and in Travis CI.
+PACKAGES=$$(go list ./... | grep -v vendor)
+test:
+	go test $(PACKAGES) $(TESTARGS)
+	go vet $(PACKAGES)
+	[ $$(go fmt $(PACKAGES) | wc -l) = 0 ]

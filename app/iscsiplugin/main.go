@@ -23,7 +23,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/kubernetes-csi/drivers/pkg/iscsi"
+	"github.com/kubernetes-csi/kubernetes-csi/pkg/iscsi"
 )
 
 var (

@@ -23,8 +23,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/kubernetes-csi/drivers/pkg/cinder/mount"
-	csicommon "github.com/kubernetes-csi/drivers/pkg/csi-common"
+	"github.com/kubernetes-csi/kubernetes-csi/pkg/cinder/mount"
+	csicommon "github.com/kubernetes-csi/kubernetes-csi/pkg/csi-common"
 )
 
 type nodeServer struct {
