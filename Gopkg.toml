@@ -19,6 +19,20 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+ignored = ["github.com/Azure/azure-sdk-for-go"]
+
+[[override]]
+  # Some older versions contain an azure-storage-go submodule
+  # that cannot be fetched anymore. Avoid those...
+  name = "github.com/Azure/azure-sdk-for-go"
+  version = ">17.0.0"
+
+[[override]]
+  name = "golang.org/x/exp"
+  # This is the latest version with golang.org/x/exp/inotify,
+  # which is needed by k8s.
+  revision = "f2486d8f4791367d077f7fa69b7855041f5b2ddf"
+
 [[constraint]]
   name = "github.com/container-storage-interface/spec"
   version = "~0.2.0"
@@ -30,10 +44,6 @@
 [[constraint]]
   name = "github.com/golang/glog"
   branch = "master"
-
-[[override]]
-  revision = "5db89f0ca68677abc5eefce8f2a0a772c98ba52d"
-  name = "github.com/docker/distribution"
 
 [[constraint]]
   name = "github.com/gophercloud/gophercloud"
@@ -52,10 +62,6 @@
   version = "1.2.1"
 
 [[constraint]]
-  name = "github.com/kubernetes-incubator/external-storage"
-  branch = "master"
-
-[[constraint]]
   name = "golang.org/x/net"
   branch = "master"
 
@@ -67,18 +73,13 @@
   name = "gopkg.in/gcfg.v1"
   version = "1.2.1"
 
-[[override]]
-  name = "k8s.io/api"
-  version = "kubernetes-1.10.0-beta.1"
-
 [[constraint]]
-  name = "k8s.io/apimachinery"
-  version = "kubernetes-1.10.0-beta.1"
+  name = "github.com/kubernetes-incubator/external-storage"
+  branch = "master"
 
-[[constraint]]
-  name = "k8s.io/client-go"
-  version = "kubernetes-1.10.0-beta.1"
-
-[[constraint]]
-  name = "k8s.io/kubernetes"
-  version = "v1.10.0-beta.1"
+# external-storage defines in Glide.yaml the version of Kubernetes
+# that we can use, so there is no point in trying to choose something
+# here.
+#[[override]]
+#  name = "k8s.io/kubernetes"
+#  version = "=1.10.4-beta.0"
