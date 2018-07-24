@@ -4,7 +4,7 @@ services:
 # Needed for e2e tests
 sudo: true
 go_import_path: github.com/kubernetes-csi/kubernetes-csi
-go: 1.x
+go: 1.10.3
 install:
   # Must ensure that the code is available where Go expects it (necessary when testing a fork).
   - if ! [ -d "${GOPATH}/src/github.com/kubernetes-csi/kubernetes-csi" ]; then
