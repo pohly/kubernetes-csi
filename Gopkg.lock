@@ -876,6 +876,7 @@
     "github.com/davecgh/go-spew/spew",
     "github.com/golang/glog",
     "github.com/golang/mock/gomock",
+    "github.com/golang/protobuf/proto",
     "github.com/gophercloud/gophercloud",
     "github.com/gophercloud/gophercloud/openstack",
     "github.com/gophercloud/gophercloud/openstack/blockstorage/v3/volumes",
